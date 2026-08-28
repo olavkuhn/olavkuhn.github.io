@@ -1,11 +1,763 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olav Kuhnen — Backend Developer &amp; IT Support Specialist</title>
+<meta name="description" content="Portfolio of Olav Kuhnen — backend developer and IT support specialist based in Potsdam/Berlin. Rust, Java, Apache Camel, IT support.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c0e13;
+    --bg-alt: #14171f;
+    --bg-card: #171a23;
+    --border: #262b37;
+    --border-soft: #1d212b;
+    --text: #eceef2;
+    --text-muted: #8b93a3;
+    --text-faint: #5b6272;
+    --accent: #f2a93b;
+    --accent-soft: rgba(242, 169, 59, 0.12);
+    --status: #3ddc97;
+    --status-soft: rgba(61, 220, 151, 0.14);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --max: 1040px;
+  }
+
+  *, *::before, *::after{ box-sizing: border-box; }
+
+  html{
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *, *::before, *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  ::selection{ background: var(--accent-soft); color: var(--accent); }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img{ max-width: 100%; display: block; }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .eyebrow{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  h1, h2, h3{
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  p{ margin: 0; }
+
+  /* ---------- Header / Nav ---------- */
+
+  .site-header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(12, 14, 19, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .nav-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  .nav-mark{
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+
+  .nav-links{
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .nav-links a{
+    color: var(--text-muted);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover{ color: var(--accent); }
+
+  @media (max-width: 620px){
+    .nav-links{ gap: 16px; font-size: 0.74rem; }
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero{
+    position: relative;
+    padding: 108px 0 96px;
+    overflow: hidden;
+  }
+
+  .hero::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--border-soft) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 90%);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hero-inner{
+    position: relative;
+    max-width: 720px;
+  }
+
+  .status-row{
+    margin-bottom: 22px;
+  }
+
+  .status-dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--status);
+    box-shadow: 0 0 0 4px var(--status-soft);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%, 100%{ opacity: 1; }
+    50%{ opacity: 0.45; }
+  }
+
+  .hero h1{
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.06;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span{ color: var(--accent); }
+
+  .hero p{
+    font-size: 1.08rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 34px;
+  }
+
+  .cta-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .btn{
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 12px 20px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+
+  .btn-primary{
+    background: var(--accent);
+    color: #14100a;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+
+  .btn-ghost{ color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- Sections shared ---------- */
+
+  section{ padding: 84px 0; }
+
+  .section-head{
+    margin-bottom: 44px;
+    max-width: 560px;
+  }
+
+  .section-head h2{
+    font-size: 1.7rem;
+    margin: 10px 0 12px;
+  }
+
+  .section-head p{
+    color: var(--text-muted);
+    font-size: 0.98rem;
+  }
+
+  #stack{ border-top: 1px solid var(--border-soft); }
+  #experience{ border-top: 1px solid var(--border-soft); }
+
+  /* ---------- Stack ---------- */
+
+  .stack-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+  }
+
+  .stack-group{
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    background: var(--bg-card);
+  }
+
+  .stack-group h3{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .tag-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 11px;
+    border-radius: 6px;
+    background: var(--bg-alt);
+  }
+
+  /* ---------- Projects ---------- */
+
+  .project-grid{
+    display: grid;
+    gap: 20px;
+  }
+
+  .project-card{
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    background: var(--bg-card);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .project-card.in-view{ opacity: 1; transform: translateY(0); }
+
+  .project-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .project-card h3{
+    font-size: 1.18rem;
+  }
+
+  .project-org{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .project-card ul{
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .project-card li + li{ margin-top: 6px; }
+
+  .project-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 4px;
+  }
+
+  .project-tags .tag{
+    font-size: 0.72rem;
+    padding: 4px 9px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Experience ---------- */
+
+  .timeline{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline-item{
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-soft);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .timeline-item.in-view{ opacity: 1; transform: translateY(0); }
+
+  .timeline-item:last-child{ border-bottom: none; }
+
+  .timeline-date{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    padding-top: 3px;
+  }
+
+  .timeline-role{
+    font-size: 1.02rem;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .timeline-org{
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .timeline-desc{
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    max-width: 560px;
+  }
+
+  @media (max-width: 620px){
+    .timeline-item{ grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  .subsection-label{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 48px 0 4px;
+  }
+
+  .lang-row{
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+  }
+
+  .lang-row span{ color: var(--text-faint); }
+
+  /* ---------- Footer ---------- */
+
+  footer{
+    border-top: 1px solid var(--border-soft);
+    padding: 64px 0 48px;
+  }
+
+  .footer-inner{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+
+  footer h2{
+    font-size: 1.6rem;
+  }
+
+  footer p{
+    color: var(--text-muted);
+    max-width: 460px;
+  }
+
+  .footer-links{
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom{
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+</style>
 </head>
 <body>
 
-  <h1>Test H1</h1>
+<header class="site-header">
+  <div class="nav-inner">
+    <a href="#top" class="nav-mark">OK</a>
+    <ul class="nav-links">
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="status-row eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        Available for junior developer &amp; IT support roles — Berlin / Potsdam
+      </div>
+      <h1>Olav Kuhnen builds backend services <span>and keeps systems running.</span></h1>
+      <p>
+        Software developer and IT support professional. I've built API services in Rust,
+        integration microservices in Java with Apache Camel, and spent three years leading
+        a team through daily operational problems. Based in Potsdam, Germany.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:olav.kuhnen1@hotmail.com">Get in touch</a>
+        <a class="btn btn-ghost" href="https://github.com/olavkuhn" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/olav-kuhnen-262827229/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Tech stack</span>
+        <h2>What I build with</h2>
+        <p>Languages, tools and platforms I've used in production internships and day-to-day work.</p>
+      </div>
+      <div class="stack-grid">
+        <div class="stack-group">
+          <h3>Languages</h3>
+          <div class="tag-list">
+            <span class="tag">Python</span>
+            <span class="tag">Rust</span>
+            <span class="tag">PHP</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h3>Data &amp; AI</h3>
+          <div class="tag-list">
+            <span class="tag">SQL</span>
+            <span class="tag">Data Visualization</span>
+            <span class="tag">Machine Learning Basics</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h3>Tools &amp; Platforms</h3>
+          <div class="tag-list">
+            <span class="tag">Git</span>
+            <span class="tag">Docker</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Postman</span>
+            <span class="tag">Trello</span>
+            <span class="tag">Jira</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Linux / Bash</span>
+          </div>
+        </div>
+        <div class="stack-group">
+          <h3>Methodologies</h3>
+          <div class="tag-list">
+            <span class="tag">Agile</span>
+            <span class="tag">Scrum</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Selected work</span>
+        <h2>Featured projects</h2>
+        <p>Backend and support work from recent internships and roles.</p>
+      </div>
+      <div class="project-grid">
+
+        <article class="project-card">
+          <div class="project-top">
+            <h3>API service built on Onion Architecture</h3>
+            <span class="project-org">LeadInnovation B.V. — Aug 2024 to Jan 2025</span>
+          </div>
+          <ul>
+            <li>Built an API application in Rust following Onion Architecture principles, keeping business logic isolated from infrastructure for easier testing and maintenance.</li>
+            <li>Worked inside an Agile/Scrum team with Git-based version control and code review.</li>
+          </ul>
+          <div class="project-tags">
+            <span class="tag">Rust</span>
+            <span class="tag">Onion Architecture</span>
+            <span class="tag">Git</span>
+            <span class="tag">Agile / Scrum</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <h3>Integration microservices for enterprise workflows</h3>
+            <span class="project-org">VodafoneZiggo Group B.V. — Jan 2024 to May 2024</span>
+          </div>
+          <ul>
+            <li>Built internal microservices in Java using Apache Camel to support enterprise integration workflows between systems.</li>
+            <li>Worked within a cross-functional team to design, test and deploy backend services.</li>
+          </ul>
+          <div class="project-tags">
+            <span class="tag">Java</span>
+            <span class="tag">Apache Camel</span>
+            <span class="tag">Microservices</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-top">
+            <h3>IT support &amp; incident resolution at scale</h3>
+            <span class="project-org">UwComputerStudent B.V. / Fujitsu K.K. — 2021 to 2025</span>
+          </div>
+          <ul>
+            <li>Diagnosed and resolved hardware, software and network issues for home users, remotely and on-site.</li>
+            <li>Delivered first-line support for Rijkswaterstaat via Fujitsu's service desk, logging and triaging incidents against SLAs.</li>
+          </ul>
+          <div class="project-tags">
+            <span class="tag">Troubleshooting</span>
+            <span class="tag">Networking</span>
+            <span class="tag">SLA management</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Background</span>
+        <h2>Experience &amp; education</h2>
+        <p>Three years leading a retail team, two years building backend services and support systems.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Sep 2024 — Sep 2025</div>
+          <div>
+            <div class="timeline-role">IT Support Technician</div>
+            <span class="timeline-org">UwComputerStudent B.V.</span>
+            <p class="timeline-desc">Remote and on-site IT support for home users. Diagnosed hardware, software and network issues, and explained fixes clearly to non-technical clients.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Aug 2024 — Jan 2025</div>
+          <div>
+            <div class="timeline-role">Software Developer, Internship</div>
+            <span class="timeline-org">LeadInnovation B.V.</span>
+            <p class="timeline-desc">Built API applications in Rust following Onion Architecture principles. Collaborated with the engineering team using Agile/Scrum and Git.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Jan 2024 — May 2024</div>
+          <div>
+            <div class="timeline-role">Software Developer, Internship</div>
+            <span class="timeline-org">VodafoneZiggo Group B.V.</span>
+            <p class="timeline-desc">Built internal microservices in Java and Apache Camel to support enterprise integration workflows, in a cross-functional team.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Jul 2023 — Sep 2024</div>
+          <div>
+            <div class="timeline-role">Supervisor, Checkout &amp; E-Commerce</div>
+            <span class="timeline-org">Plus Holding B.V.</span>
+            <p class="timeline-desc">Led the cashier and e-commerce team. Oversaw daily operations and staff scheduling, trained new hires, and optimized checkout and fulfillment processes. Promoted from Cashier after 4+ years.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Aug 2021 — May 2022</div>
+          <div>
+            <div class="timeline-role">IT Support, Internship</div>
+            <span class="timeline-org">Fujitsu K.K. — Service Desk (client: Rijkswaterstaat)</span>
+            <p class="timeline-desc">First-line IT support for Rijkswaterstaat employees via the Fujitsu service desk. Logged, triaged and resolved incidents against service-level agreements.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Jan 2019 — Jul 2023</div>
+          <div>
+            <div class="timeline-role">Cashier</div>
+            <span class="timeline-org">Plus Holding B.V.</span>
+            <p class="timeline-desc">Point-of-sale transactions and customer service in a high-volume retail environment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection-label">Education</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">1 semester</div>
+          <div>
+            <div class="timeline-role">Data Science &amp; AI — Specialization</div>
+            <span class="timeline-org">XU Exponential University of Applied Sciences</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Mar 2023 — Mar 2025</div>
+          <div>
+            <div class="timeline-role">Software Development</div>
+            <span class="timeline-org">Hogeschool Utrecht</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Aug 2019 — Aug 2022</div>
+          <div>
+            <div class="timeline-role">Network Management</div>
+            <span class="timeline-org">MBO Utrecht</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection-label">Languages</div>
+      <div class="lang-row">
+        <div><span>Dutch —</span> Native</div>
+        <div><span>English —</span> C2, fluent</div>
+        <div><span>German —</span> A2, elementary</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap footer-inner">
+    <span class="eyebrow">Get in touch</span>
+    <h2>Let's talk about a role.</h2>
+    <p>Looking for junior software developer or IT support roles in the Berlin/Potsdam area. Reach out directly or find me on GitHub and LinkedIn.</p>
+    <div class="footer-links">
+      <a class="btn btn-primary" href="mailto:olav.kuhnen1@hotmail.com">olav.kuhnen1@hotmail.com</a>
+      <a class="btn btn-ghost" href="https://github.com/olavkuhn" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/olav-kuhnen-262827229/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+    <div class="wrap footer-bottom" style="padding:0; width:100%;">
+      <span>Olav Kuhnen — Potsdam, Germany</span>
+      <span>Built with plain HTML &amp; CSS</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var targets = document.querySelectorAll('.project-card, .timeline-item');
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      targets.forEach(function(el){ el.classList.add('in-view'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    targets.forEach(function(el){ observer.observe(el); });
+  })();
+</script>
 
 </body>
 </html>
